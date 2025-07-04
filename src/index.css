@@ -24,11 +24,12 @@ a:hover {
 
 body {
   margin: 0;
+  padding-top: 4rem;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 98vh;
-  background-color: limegreen;
+  background-color: rgb(10, 41, 10);
   border: 1vh solid rgb(212, 154, 79);
 }
 
@@ -39,6 +40,7 @@ h1 {
   position: absolute;
   top: 0rem;
   margin: .2rem;
+  max-width: 45vw;
 }
 
 h2 {
@@ -49,6 +51,8 @@ h2 {
   top: 0rem;
   right: 0;
   margin: 1rem;
+  max-width: 45vw;
+  text-align: right;
 }
 
 button {
@@ -58,7 +62,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -75,10 +79,10 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+  body {
+    background-color: limegreen;
+  }
   a:hover {
     color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

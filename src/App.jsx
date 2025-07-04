@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 import { Tile, TILES } from './Tile'
@@ -237,7 +235,7 @@ function App() {
           </div>
         </div>
         <div style={count < 10 ? { display: 'none' } : {}}>
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('lowerSameSuit', 5)}>{`⬇️ Same (+${5 * multiplier})`}</button>
             <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('lowerSameSuit') ?? '--'}</span>
