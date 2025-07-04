@@ -116,6 +116,7 @@ export const Tile = ({
         margin: size === 'half' ? '0 2px 2px 0' : '0 0px',
         border,
         borderRadius: size === 'half' ? '4px' : '8px',
+        boxShadow: size === 'half' ? 'green 2px -2px inset' : 'green 4px -4px inset',
         display: 'inline-block',
         width: `${width}px`,
         height: `${height}px`,
