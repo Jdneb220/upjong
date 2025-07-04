@@ -3,6 +3,9 @@ import './App.css'
 
 import { Tile, TILES } from './Tile'
 
+let myCurrentTile = null;
+let myPrevTile = null;
+
 function getShuffledWall() {
   // Create 4 copies of each tile
   const wall = [];
@@ -18,6 +21,8 @@ function getShuffledWall() {
 }
 
 function App() {
+
+  const [prevTile, setPrevTile] = useState(null);
   const [tileClass, setTileClass] = useState("");
   const tileClassTimeout = React.useRef();
   // Probability calculation helpers
@@ -71,7 +76,6 @@ function App() {
     return 'other';
   }
   const [multiplier, setMultiplier] = useState(1);
-  const [lastNumber, setLastNumber] = useState(null); // stores the last number tile value
 
   const [count, setCount] = useState(0)
   const [wall, setWall] = useState(() => getShuffledWall());
@@ -79,7 +83,7 @@ function App() {
   const [guess, setGuess] = useState(null); // 'lower' or 'higher'
   const [history, setHistory] = useState([]); // stores previous currentTiles
 
-  // On mount, set the initial currentTile and lastNumber
+  // On mount, set the initial currentTile
   useEffect(() => {
     if (currentTile === null && wall.length > 0) {
       let i = 0;
@@ -88,12 +92,14 @@ function App() {
         i++;
       }
       
+      console.log('here!')
       setCurrentTile(wall[i]);
-      const num = getTileNumber(wall[i]);
-      setLastNumber(num);
+      myCurrentTile = wall[i];
+      console.log(myCurrentTile)
+      // Initialize prevTile to the same as currentTile
       //setWall(wall.splice(i, 1)); // remove the used tile
     }
-  }, [wall, currentTile]);
+  }, [wall, currentTile, prevTile]);
 
   // Helper to get tile number for comparison (1-9 for man/pin/sou, null for others)
   function getTileNumber(tile) {
@@ -105,23 +111,34 @@ function App() {
   }
 
   function handleGuess(type, value) {
+    console.log(TILES.indexOf(myCurrentTile))
+    if (TILES.indexOf(myCurrentTile) < 27) {
+      console.log('here')
+      myPrevTile = myCurrentTile; // If currentTile is wind/dragon, keep prevTile as is
+      console.log(myPrevTile)
+    }
+
     // Remove any previous animation class
     if (tileClassTimeout.current) clearTimeout(tileClassTimeout.current);
     // type can be: 'lower', 'higher', 'lowerSameSuit', 'lowerDiffSuit', 'higherDiffSuit', 'higherSameSuit'
     setGuess(type);
     if (wall.length < 2) return; // not enough tiles to draw
-    const prevTile = currentTile;
-    const prevNum = getTileNumber(prevTile);
-    const prevSuit = getTileSuit(prevTile);
+    // Use prevTile from state for number tile comparisons
+    
     // pop a tile from the wall
     const newWall = wall.slice(0, -1);
     const nextTile = newWall[newWall.length - 1];
     setWall(newWall);
-    setCurrentTile(nextTile);
-    setHistory(h => [...h, prevTile]);
-    // Check if nextTile is wind or dragon
+    // Only update prevTile if nextTile is not wind/dragon
     const idx = TILES.indexOf(nextTile);
     const isWindOrDragon = idx >= 27;
+    if (!isWindOrDragon) {
+      setPrevTile(currentTile);
+    }
+    setCurrentTile(nextTile);
+    myCurrentTile = nextTile;
+    setHistory(h => [...h, currentTile]);
+    // Check if nextTile is wind or dragon
     const nextNum = getTileNumber(nextTile);
     const nextSuit = getTileSuit(nextTile);
     let newClass = "";
@@ -131,15 +148,17 @@ function App() {
       setTileClass(newClass);
       tileClassTimeout.current = setTimeout(() => setTileClass(""), 1200);
       setMultiplier(m => m * 2);
-      // Do not update count or lastNumber, just return
+      // Do not update count or prevTile, just return
       return;
     }
     if (count <= 10)
       setMultiplier(1); // reset multiplier for number tiles
-    // If nextTile is a number tile, compare to lastNumber (or prevNum if lastNumber is null)
-    setLastNumber(nextNum);
-    const compareNum = lastNumber !== null ? lastNumber : prevNum;
-    const compareSuit = lastNumber !== null ? getTileSuit(prevTile) : prevSuit;
+
+    const compareNum = getTileNumber(myPrevTile);
+    const compareSuit = getTileSuit(myPrevTile);
+
+    console.log("handleGuess", { type, value, myPrevTile, myCurrentTile, nextTile, wallLength: wall.length, newWallLength: newWall.length });
+
     let correct = false;
     if (compareNum !== null && nextNum !== null) {
       if (type === 'lower' && nextNum < compareNum) correct = true;
