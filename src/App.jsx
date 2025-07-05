@@ -244,7 +244,7 @@ function App() {
           )}
         </div>
         <div style={wall.length <= 1 ? { display: 'none' } : {}}>
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('lower', 1)}>{`⬇️ (+${multiplier})`}</button>
             <span style={{ fontSize: '0.9rem' }}>P: {getProb('lower') ?? '--'}</span>
