@@ -32,7 +32,7 @@ body {
   min-height: 90vh;
   background: url("./assets/felt.jpg");
   background-size: cover;
-  border: 1vh solid rgb(212, 154, 79);
+  border: .35rem solid rgb(212, 154, 79);
 }
 
 h1 {
