@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
-
+import womp from './assets/womp.mp3';
+import coin from './assets/coin.mp3';
 import { Tile, TILES } from './Tile'
 
 let myCurrentTile = null;
@@ -21,7 +22,9 @@ function getShuffledWall() {
 }
 
 function App() {
-
+  const wompRef = useRef(new Audio(womp));
+  const coinRef = useRef(new Audio(coin));
+  const [audio, setAudio] = useState(true);
   const [prevTile, setPrevTile] = useState(null);
   const [tileClass, setTileClass] = useState("");
   const tileClassTimeout = React.useRef();
@@ -92,10 +95,10 @@ function App() {
         i++;
       }
       
-      console.log('here!')
+      
       setCurrentTile(wall[i]);
       myCurrentTile = wall[i];
-      console.log(myCurrentTile)
+      
       // Initialize prevTile to the same as currentTile
       //setWall(wall.splice(i, 1)); // remove the used tile
     }
@@ -111,11 +114,10 @@ function App() {
   }
 
   function handleGuess(type, value) {
-    console.log(TILES.indexOf(myCurrentTile))
     if (TILES.indexOf(myCurrentTile) < 27) {
-      console.log('here')
+      
       myPrevTile = myCurrentTile; // If currentTile is wind/dragon, keep prevTile as is
-      console.log(myPrevTile)
+      
     }
 
     // Remove any previous animation class
@@ -157,7 +159,7 @@ function App() {
     const compareNum = getTileNumber(myPrevTile);
     const compareSuit = getTileSuit(myPrevTile);
 
-    console.log("handleGuess", { type, value, myPrevTile, myCurrentTile, nextTile, wallLength: wall.length, newWallLength: newWall.length });
+    
 
     let correct = false;
     if (compareNum !== null && nextNum !== null) {
@@ -181,8 +183,15 @@ function App() {
       setTileClass(newClass);
       tileClassTimeout.current = setTimeout(() => setTileClass(""), 1200);
       if (correct) {
+        if (audio)
+          coinRef.current.play();
         setCount(c => c + value * multiplier);
       } else {
+        if (audio) {
+          wompRef.current.playbackRate = 1.5;
+          wompRef.current.currentTime = 0.4; // Reset to start
+          wompRef.current.play();
+        }
         setCount(c => { if (c - value * multiplier < 10) { setMultiplier(1); } return c - value * multiplier;});
       }
     } else {
@@ -278,13 +287,22 @@ function App() {
         </div>
         </div>
         </div>
-        <div style={{ margin: '0.5rem', position: ' absolute', bottom: '0', right: '0' }}>
-          <button
+        <div style={{ margin: '0.5rem .75rem', fontSize: '2rem', position: ' absolute', bottom: '0', left: '0' }}>
+          <span
+            style={ audio ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
+            onClick={() => setAudio(!audio)}
+          >
+            {audio ? '🔊' : '🔈'}
+          </span>
+        </div>
+        <div style={{ margin: '0.5rem .75rem',  fontSize: '2rem', position: ' absolute', bottom: '0', right: '0' }}>
+          <span
+            style={multiplier === 1 ? {color: 'gray'} : { cursor: 'not-allowed' }}
             onClick={() => setMultiplier(1)}
             disabled={multiplier === 1}
           >
             {`x${multiplier}`}
-          </button>
+          </span>
         </div>
         <div style={{ marginTop: '1rem', display: 'none', flexDirection: 'row', gap: '0.25rem', flexWrap: 'wrap', justifyContent: 'center', minHeight: '40px' }}>
           {sortedHistory.map((tile, idx) => tile && (
