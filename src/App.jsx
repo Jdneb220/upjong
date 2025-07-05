@@ -243,42 +243,47 @@ function App() {
             />
           )}
         </div>
+        <div style={wall.length <= 1 ? { display: 'none' } : {}}>
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('lower', 1)}>{`⬇️ (+${multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('lower') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('lower') ?? '--'}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('higher', 1)}>{`⬆️ (+${multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('higher') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('higher') ?? '--'}</span>
           </div>
         </div>
         <div style={count < 10 ? { display: 'none' } : {}}>
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('lowerSameSuit', 5)}>{`⬇️ Same (+${5 * multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('lowerSameSuit') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('lowerSameSuit') ?? '--'}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('lowerDiffSuit', 3)}>{`⬇️ Diff (+${3 * multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('lowerDiffSuit') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('lowerDiffSuit') ?? '--'}</span>
           </div>
+          </div><div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('higherDiffSuit', 3)}>{`⬆️ Diff (+${3 * multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('higherDiffSuit') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('higherDiffSuit') ?? '--'}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button onClick={() => handleGuess('higherSameSuit', 5)}>{`⬆️ Same (+${5 * multiplier})`}</button>
-            <span style={{ fontSize: '0.9rem', color: '#555' }}>P: {getProb('higherSameSuit') ?? '--'}</span>
+            <span style={{ fontSize: '0.9rem' }}>P: {getProb('higherSameSuit') ?? '--'}</span>
+          </div>
           </div>
         </div>
         </div>
-        <div style={{ marginTop: '0.5rem' }}>
+        </div>
+        <div style={{ margin: '0.5rem', position: ' absolute', bottom: '0', right: '0' }}>
           <button
             onClick={() => setMultiplier(1)}
             disabled={multiplier === 1}
           >
-            {`Reset Multi (x${multiplier})`}
+            {`x${multiplier}`}
           </button>
         </div>
         <div style={{ marginTop: '1rem', display: 'none', flexDirection: 'row', gap: '0.25rem', flexWrap: 'wrap', justifyContent: 'center', minHeight: '40px' }}>
