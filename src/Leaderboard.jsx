@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-const apiKey = import.meta.env.VITE_LEADERBOARD_API_KEY;
 
 const Leaderboard = (props) => {
   let scores = [...props.data].slice(0,3); // Limit to top 3 scores for display;
@@ -26,7 +25,7 @@ const Leaderboard = (props) => {
   const handleSave = () => { 
       setSave(false);
       setSaving(true);
-      fetch('https://script.google.com/macros/s/AKfycbzyHTjlkj5aPXF2--2doG6e_raMwhWYWRKahV21eAc5-jpyIR0crOj-3p_M4_Q-1CA/exec?api='+apiKey+'&name='+you+'&score='+props.score, {
+      fetch('https://script.google.com/macros/s/AKfycbzyHTjlkj5aPXF2--2doG6e_raMwhWYWRKahV21eAc5-jpyIR0crOj-3p_M4_Q-1CA/exec?name='+you+'&score='+props.score, {
       method: 'POST'
         }).then(res => {
         setSaving(false);
