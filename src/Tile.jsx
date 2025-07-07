@@ -1,4 +1,3 @@
-import React from 'react';
 import tileMap from './assets/tile_map.jpg';
 
 export const TILES = [

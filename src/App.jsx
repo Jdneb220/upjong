@@ -3,6 +3,7 @@ import './App.css'
 import womp from './assets/womp.mp3';
 import coin from './assets/coin.mp3';
 import { Tile, TILES } from './Tile'
+import Leaderboard from './Leaderboard';
 
 let myCurrentTile = null;
 let myPrevTile = null;
@@ -21,7 +22,7 @@ function getShuffledWall() {
   return wall;
 }
 
-function App() {
+function App(props) {
   const wompRef = useRef(new Audio(womp));
   const coinRef = useRef(new Audio(coin));
   const [audio, setAudio] = useState(true);
@@ -252,6 +253,9 @@ function App() {
             />
           )}
         </div>
+        {wall.length >= 1 && (
+          <Leaderboard data={props.data} score={count}/>
+        )}
         <div style={wall.length <= 1 ? { display: 'none' } : {}}>
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
