@@ -253,7 +253,7 @@ function App(props) {
             />
           )}
         </div>
-        {wall.length >= 1 && (
+        {wall.length <= 1 && (
           <Leaderboard data={props.data} score={count}/>
         )}
         <div style={wall.length <= 1 ? { display: 'none' } : {}}>
